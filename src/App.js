@@ -10,7 +10,8 @@ class App extends Component {
     lng: 67.0166725,
     zoom: 15,
     search: "",
-    markup: false
+    markup: false,
+    infoWindow : false,
   };
 
   handleChange = (event) => {
@@ -24,7 +25,7 @@ class App extends Component {
     Geocode.setRegion("pk");
     Geocode.enableDebug();
 
-    Geocode.fromAddress(this.state.search +" in Pakistan").then(
+    Geocode.fromAddress(this.state.search).then(
       response => {
         const { lat, lng } = response.results[0].geometry.location;
         this.setState({lat: lat, lng: lng, markup: true});
@@ -34,6 +35,14 @@ class App extends Component {
         console.error(error);
       }
     );
+  }
+
+  mapClick = () => {
+    this.setState({infoWindow : true});
+  }
+
+  onInfoWindowClose = () => {
+    this.setState({infoWindow : false});
   }
  
   render() {
@@ -54,22 +63,29 @@ class App extends Component {
             google={this.props.google}
             zoom={this.state.zoom}
             center={{ lat: this.state.lat, lng: this.state.lng}}
-            style={{width: '100%', height: '100%'}}
+            style={{width: '100%', height: '100%',position: 'relative'}}
             initialCenter={{ lat: this.state.lat, lng: this.state.lng}}
           >
+            {/* <Marker
+              title={'The marker`s title will appear as a tooltip.'}
+              name={'SOMA'}
+              position={{ lat: 24.8531234, lng: 67.0166834,}}
+               /> */}
+
           {this.state.markup
           &&
           <Marker title={this.state.search}
                   name={this.state.search}
-                  position={{ lat: this.state.lat, lng: this.state.lng}} />
-          }
-          {this.state.markup
-          &&
-          <InfoWindow onClose={this.onInfoWindowClose}>
+                  position={{ lat: this.state.lat, lng: this.state.lng}} 
+                  onClick={this.mapClick}>
+              <InfoWindow
+              onClose={this.onInfoWindowClose}
+              visible={true}>
                   <div>
                     <h1>{this.state.search}</h1>
                   </div>
               </InfoWindow>
+          </Marker>
           }
         </Map>
       </div>
