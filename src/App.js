@@ -20,7 +20,7 @@ class App extends Component {
 
   onSearch = (event) => {
     event.preventDefault();
-    Geocode.setApiKey("AIzaSyBnAnyYy8DPvd-sZM3IgGk485HApkbWxZA");
+    Geocode.setApiKey("");
     Geocode.setLanguage("en");
     Geocode.setRegion("pk");
     Geocode.enableDebug();
@@ -95,5 +95,5 @@ class App extends Component {
 }
 
 export default GoogleApiWrapper({
-  apiKey: ('AIzaSyBjM7wHvs9daojQUeSMIh6ZvWxqnzjEpTo')
+  apiKey: ('')
 })(App)
